@@ -1,0 +1,33 @@
+generated: '2026-09-09'
+method: probed
+source: >-
+  Response headers observed live against https://aegisships.com/wp-json/ on 2026-09-09. No rate
+  limit is documented anywhere, because no developer documentation exists.
+provider: Aegis Marine Shipmanagement
+limit_count: 0
+limits: []
+response_headers:
+  ratelimit_headers_returned: false
+  observed: []
+  detail: >-
+    No RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset, no X-RateLimit-* and no Retry-After
+    header appeared on any response across the pages, media, taxonomy, search, discovery, oEmbed
+    and SEO endpoints. An agent gets no runtime budget signal from this API.
+exhaustion_status: null
+pagination_ceiling:
+  parameter: per_page
+  maximum: 100
+  enforcement: HTTP 400 `rest_invalid_param`
+  note: >-
+    The only enforced quantitative constraint observed. It caps page size, not request rate.
+  evidence:
+    url: https://aegisships.com/wp-json/wp/v2/pages?per_page=200
+    status: 400
+undocumented_throttling:
+  possible: true
+  detail: >-
+    The site runs the Wordfence security plugin (the `wordfence/v1` namespace is registered), which
+    commonly applies undocumented request throttling and IP blocking at the edge. A consumer has no
+    published way to know the threshold in advance.
+notes:
+- An honest zero. Nothing was found because nothing is published, not because the probe was skipped.

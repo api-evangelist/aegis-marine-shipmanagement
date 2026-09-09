@@ -1,0 +1,107 @@
+generated: '2026-09-09'
+method: probed
+source: >-
+  Live probes of https://aegisships.com/wp-json/ on 2026-09-09 plus the derived OpenAPI documents in
+  openapi/. Aegis Marine Shipmanagement publishes no developer documentation, so every convention
+  below was observed on the wire rather than read from a docs page.
+provider: Aegis Marine Shipmanagement
+authentication:
+  style: none
+  detail: >-
+    Anonymous read access, no credential. The root index advertises an empty `authentication` array.
+  cross_reference: authentication/aegis-marine-shipmanagement-authentication.yml
+pagination:
+  style: page-number
+  parameters:
+  - name: page
+    default: 1
+    description: 1-indexed page number.
+  - name: per_page
+    default: 10
+    maximum: 100
+    description: Items per page. Values above 100 are rejected with HTTP 400 `rest_invalid_param`.
+  response_fields:
+    body: A bare JSON array — the collection is not wrapped in an envelope.
+    headers:
+    - name: X-WP-Total
+      description: Total number of matching objects.
+    - name: X-WP-TotalPages
+      description: Total number of pages available.
+    - name: Link
+      description: RFC 8288 `rel="next"` / `rel="prev"` pagination links.
+  observed: true
+  evidence: https://aegisships.com/wp-json/wp/v2/media?per_page=1
+sparse_fields:
+  supported: true
+  parameter: _fields
+  detail: >-
+    A comma-separated `_fields` list trims the response to the named properties. Materially useful
+    here because page and taxonomy records otherwise carry a large `yoast_head` HTML blob.
+  observed: true
+field_expansion:
+  supported: true
+  parameter: _embed
+  detail: >-
+    `_embed` inlines linked resources named in `_links` (for example a page's featured media) into
+    an `_embedded` object.
+context_negotiation:
+  supported: true
+  parameter: context
+  values:
+  - view
+  - embed
+  detail: >-
+    `context=embed` returns a reduced record. `context=edit` requires authentication and is not
+    reachable anonymously.
+metadata:
+  supported: false
+  detail: >-
+    A `meta` object is present on term records but empty; no custom fields are registered or
+    exposed.
+request_id_tracing:
+  supported: false
+  detail: No correlation or request-id header is returned on any response.
+versioning:
+  scheme: namespace-in-path
+  current: wp/v2
+  detail: >-
+    The API is versioned by namespace segment (`/wp/v2`, `/oembed/1.0`, `/yoast/v1`). The version
+    tracks the WordPress core release the site runs, not a contract Aegis Marine Shipmanagement
+    controls or publishes. There is no provider-declared API version.
+  cross_reference: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+error_envelope:
+  format: wordpress-rest-error
+  media_type: application/json
+  rfc9457: false
+  cross_reference: errors/aegis-marine-shipmanagement-problem-types.yml
+rate_limit_signaling:
+  headers_returned: false
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header was observed on any response, and no limit
+    is documented. A Wordfence installation is present and may apply undocumented edge throttling.
+  cross_reference: rate-limits/aegis-marine-shipmanagement-rate-limits.yml
+caching:
+  detail: >-
+    Responses carry no ETag or Cache-Control directive usable for conditional requests. Content is
+    effectively static — every object on the site was last modified in 2018 or 2019.
+idempotency:
+  coverage: na
+  mechanism: none
+  header: null
+  scope: []
+  detail: >-
+    Not applicable. The publicly reachable surface is read-only: every operation in the seven
+    derived OpenAPI documents is a GET. WordPress core registers write methods on these
+    collections, but they are closed to the public (HTTP 401) and no credential can be obtained,
+    so there is no mutating surface for an idempotency mechanism to protect.
+reversibility:
+  coverage: na
+  detail: >-
+    Not applicable, for the same reason as idempotency. There is no publicly callable write, so
+    there is no action for an agent to take back. No cancel, undo, restore or reversal operation
+    exists, and none is needed.
+  reversal_operations: []
+  windows: []
+dry_run_mode:
+  coverage: na
+  detail: Not applicable — no write surface to rehearse.

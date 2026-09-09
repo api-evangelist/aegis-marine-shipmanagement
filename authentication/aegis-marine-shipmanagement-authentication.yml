@@ -1,0 +1,62 @@
+generated: '2026-09-09'
+method: probed
+source: >-
+  Live anonymous probes of https://aegisships.com/wp-json/ and its collections, 2026-09-09. The
+  root index advertises an empty `authentication` array; no developer documentation, signup, key
+  issuance or OAuth surface exists on aegisships.com.
+provider: Aegis Marine Shipmanagement
+summary: >-
+  The entire publicly reachable surface is anonymous and unauthenticated. Aegis Marine
+  Shipmanagement operates no developer program: there is no signup, no API key issuance, no OAuth
+  client registration and no documented credential of any kind. Reads against published content
+  succeed with no credentials; the routes that would require a credential are simply closed to the
+  public, returning HTTP 401 rather than offering a way to authenticate.
+schemes: []
+schemes_note: >-
+  No securityScheme is declared, because none is served. The derived OpenAPI documents in openapi/
+  intentionally carry no `securitySchemes` block — inventing one would assert an authentication
+  model this provider does not publish.
+anonymous_access:
+  supported: true
+  scope: read-only
+  credential_required: false
+  verified: '2026-09-09'
+  evidence:
+  - url: https://aegisships.com/wp-json/
+    status: 200
+    note: Root index returns `"authentication":[]` — no scheme advertised.
+  - url: https://aegisships.com/wp-json/wp/v2/pages?per_page=1
+    status: 200
+    note: 15 pages readable with no credential (X-WP-Total 15).
+  - url: https://aegisships.com/wp-json/wp/v2/media?per_page=1
+    status: 200
+    note: 121 attachments readable with no credential.
+gated_surfaces:
+- path: /wp/v2/users
+  status: 401
+  code: rest_user_cannot_view
+  note: >-
+    User enumeration is denied. Page and media records carry an `author` integer that therefore
+    cannot be resolved anonymously.
+- path: /wp/v2/settings
+  status: 401
+  code: rest_forbidden
+  note: Site settings require an authenticated administrator.
+- path: /contact-form-7/v1/contact-forms
+  status: 403
+  code: wpcf7_forbidden
+  note: Contact Form 7 form definitions are not publicly listable.
+write_surface:
+  publicly_available: false
+  note: >-
+    The route index registers POST/PUT/PATCH/DELETE methods on core WordPress collections, and
+    admin namespaces (wordfence/v1, yoast/v1 indexing, wp-site-health/v1) are present. None is
+    usable by the public: WordPress applies the same capability checks that return 401 on
+    /wp/v2/settings, and no credential can be obtained because no signup exists. The derived
+    OpenAPI documents scope to the anonymously reachable GET surface for this reason.
+  supported_credentials_upstream:
+  - Application Passwords (/wp/v2/users/{id}/application-passwords) — registered by WordPress core
+    but requires an existing authenticated account; no account provisioning is offered publicly.
+recommendations:
+- Aegis Marine Shipmanagement publishes no authentication documentation because it offers no
+  developer program; nothing here should be read as a gap in a product they sell.

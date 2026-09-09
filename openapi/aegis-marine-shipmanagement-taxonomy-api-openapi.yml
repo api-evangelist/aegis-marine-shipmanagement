@@ -1,0 +1,347 @@
+# Aegis Marine Shipmanagement Taxonomy API
+# generated: '2026-09-09'
+# method: derived
+# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+openapi: 3.1.0
+info:
+  title: Aegis Marine Shipmanagement Taxonomy API
+  description: 'Anonymous read access to the two content taxonomies on aegisships.com — one `category`
+    term (`News`) and 25 `post_tag` terms. Every term reports `count: 0` because the site publishes no
+    posts, so these terms are an empty classification scaffold rather than an active index.'
+  version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
+  contact:
+    name: Aegis Marine Shipmanagement
+    email: info@aegisships.com
+    url: https://aegisships.com/contact/
+  x-generated-by: API Evangelist enrichment pipeline (local-v3)
+  x-generated-from: live route index + observed responses at https://aegisships.com/wp-json/
+  x-provenance:
+    generated: '2026-09-09'
+    method: derived
+    source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+    note: Derived from the site's own self-describing WordPress route index and from responses actually
+      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
+      core, not a product API authored by Aegis Marine Shipmanagement.
+servers:
+- url: https://aegisships.com/wp-json
+  description: WordPress REST API root for aegisships.com
+tags:
+- name: Categories
+- name: Tags
+paths:
+  /wp/v2/categories:
+    get:
+      operationId: getCategories
+      tags:
+      - Categories
+      summary: List categories
+      description: Returns the hierarchical `category` terms. `X-WP-Total` read 1 when captured.
+      parameters:
+      - &id001
+        description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
+      - &id003
+        name: page
+        in: query
+        required: false
+        description: Current page of the collection.
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - &id004
+        name: per_page
+        in: query
+        required: false
+        description: Maximum number of items returned per page. The API rejects values above 100 with
+          HTTP 400 `rest_invalid_param`.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+      - &id005
+        name: search
+        in: query
+        required: false
+        description: Limit results to those matching a search string.
+        schema:
+          type: string
+      - &id006
+        name: order
+        in: query
+        required: false
+        description: Sort order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: slug
+        in: query
+        required: false
+        description: Limit results to terms with specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: parent
+        in: query
+        required: false
+        description: Limit results to terms with a specific parent id.
+        schema:
+          type: integer
+      - name: hide_empty
+        in: query
+        required: false
+        description: Whether to hide terms not assigned to any object.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages`
+            response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of matching objects.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 `next`/`prev` pagination links.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+              example:
+              - &id002
+                id: 60
+                count: 0
+                link: https://aegisships.com/category/news/
+                name: News
+                slug: news
+                taxonomy: category
+                parent: 0
+        '400': &id007
+          description: '`rest_invalid_param` — a query parameter failed validation (observed on `per_page=200`).'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+  /wp/v2/categories/{id}:
+    get:
+      operationId: getCategory
+      tags:
+      - Categories
+      summary: Retrieve a category
+      description: Returns a single category term by numeric id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique numeric identifier for the object.
+        schema:
+          type: integer
+      - *id001
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+              example: *id002
+        '404': &id009
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+  /wp/v2/tags:
+    get:
+      operationId: getTags
+      tags:
+      - Tags
+      summary: List tags
+      description: Returns the flat `post_tag` terms. `X-WP-Total` read 25 when captured.
+      parameters:
+      - *id001
+      - *id003
+      - *id004
+      - *id005
+      - *id006
+      - name: slug
+        in: query
+        required: false
+        description: Limit results to terms with specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: hide_empty
+        in: query
+        required: false
+        description: Whether to hide terms not assigned to any object.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages`
+            response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of matching objects.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 `next`/`prev` pagination links.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+              example:
+              - &id008
+                id: 16
+                count: 0
+                link: https://aegisships.com/tag/2017/
+                name: '2017'
+                slug: '2017'
+                taxonomy: post_tag
+        '400': *id007
+  /wp/v2/tags/{id}:
+    get:
+      operationId: getTag
+      tags:
+      - Tags
+      summary: Retrieve a tag
+      description: Returns a single tag term by numeric id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique numeric identifier for the object.
+        schema:
+          type: integer
+      - *id001
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+              example: *id008
+        '404': *id009
+components:
+  schemas:
+    Category:
+      type: object
+      description: A term in the hierarchical `category` taxonomy. One exists at capture (`News`).
+      properties:
+        id: &id010
+          type: integer
+          description: Unique identifier for the term.
+        count: &id011
+          type: integer
+          description: Number of published objects assigned to the term. Every term on this site reads
+            0, because no posts are published.
+        description: &id012
+          type: string
+          description: HTML description of the term.
+        link: &id013
+          type: string
+          format: uri
+          description: Public archive URL for the term.
+        name: &id014
+          type: string
+          description: Display name of the term.
+        slug: &id015
+          type: string
+          description: URL-safe identifier for the term.
+        _links: &id016
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
+        taxonomy:
+          type: string
+          const: category
+          description: Taxonomy the term belongs to.
+        parent:
+          type: integer
+          description: Identifier of the parent category, or 0. References `Category.id`.
+    Tag:
+      type: object
+      description: A term in the flat `post_tag` taxonomy. 25 exist at capture.
+      properties:
+        id: *id010
+        count: *id011
+        description: *id012
+        link: *id013
+        name: *id014
+        slug: *id015
+        _links: *id016
+        taxonomy:
+          type: string
+          const: post_tag
+          description: Taxonomy the term belongs to.
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
+        with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.

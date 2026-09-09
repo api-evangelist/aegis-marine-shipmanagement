@@ -1,0 +1,318 @@
+# Aegis Marine Shipmanagement Pages API
+# generated: '2026-09-09'
+# method: derived
+# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+openapi: 3.1.0
+info:
+  title: Aegis Marine Shipmanagement Pages API
+  description: Anonymous read access to the 15 published WordPress pages behind aegisships.com — Homepage,
+    About and its four child pages (Company Profile, CEO Note, Board of Directors, Operations), Fleet,
+    Fleet Selection, Fleet Management, Services, News, Contact, Affiliate, Privacy Policy and Disclaimer.
+    This is the corporate website's content, exposed through the WordPress core REST API; it is not a
+    shipping, chartering or fleet-data product API.
+  version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
+  contact:
+    name: Aegis Marine Shipmanagement
+    email: info@aegisships.com
+    url: https://aegisships.com/contact/
+  x-generated-by: API Evangelist enrichment pipeline (local-v3)
+  x-generated-from: live route index + observed responses at https://aegisships.com/wp-json/
+  x-provenance:
+    generated: '2026-09-09'
+    method: derived
+    source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+    note: Derived from the site's own self-describing WordPress route index and from responses actually
+      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
+      core, not a product API authored by Aegis Marine Shipmanagement.
+servers:
+- url: https://aegisships.com/wp-json
+  description: WordPress REST API root for aegisships.com
+tags:
+- name: Pages
+paths:
+  /wp/v2/pages:
+    get:
+      operationId: getPages
+      tags:
+      - Pages
+      summary: List pages
+      description: Returns a paginated collection of published pages. `X-WP-Total` read 15 when captured.
+      parameters:
+      - &id001
+        description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
+      - name: page
+        in: query
+        required: false
+        description: Current page of the collection.
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: per_page
+        in: query
+        required: false
+        description: Maximum number of items returned per page. The API rejects values above 100 with
+          HTTP 400 `rest_invalid_param`.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+      - name: search
+        in: query
+        required: false
+        description: Limit results to those matching a search string.
+        schema:
+          type: string
+      - name: order
+        in: query
+        required: false
+        description: Sort order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: slug
+        in: query
+        required: false
+        description: Limit results to pages with one or more specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: parent
+        in: query
+        required: false
+        description: Limit results to pages whose parent matches one of the given ids.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: orderby
+        in: query
+        required: false
+        description: Field to sort the collection by.
+        schema:
+          type: string
+          enum:
+          - date
+          - id
+          - title
+          - slug
+          - menu_order
+          - modified
+      - name: _fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to return, reducing payload size.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages`
+            response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of matching objects.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 `next`/`prev` pagination links.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+              example:
+              - &id002
+                id: 433
+                date: '2018-11-12T10:29:56'
+                modified: '2019-01-25T10:41:41'
+                slug: company-profile
+                status: publish
+                type: page
+                link: https://aegisships.com/about/company-profile/
+                title:
+                  rendered: Company Profile
+                author: 1
+                featured_media: 0
+                parent: 429
+        '400':
+          description: '`rest_invalid_param` — a query parameter failed validation (observed on `per_page=200`).'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+  /wp/v2/pages/{id}:
+    get:
+      operationId: getPage
+      tags:
+      - Pages
+      summary: Retrieve a page
+      description: Returns a single published page by numeric id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique numeric identifier for the object.
+        schema:
+          type: integer
+      - *id001
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+              example: *id002
+        '404':
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+components:
+  schemas:
+    Page:
+      type: object
+      description: A published WordPress page on aegisships.com. 15 exist at capture.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the page.
+        date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Publication date in the site's timezone.
+        date_gmt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Publication date as GMT.
+        modified:
+          type: string
+          format: date-time
+          description: Last modification date in the site's timezone.
+        guid:
+          type: object
+          properties: &id003
+            rendered:
+              type: string
+              description: HTML-rendered value.
+          description: Globally unique identifier for the page.
+        slug:
+          type: string
+          description: Alphanumeric identifier unique to the page, e.g. `company-profile`.
+        status:
+          type: string
+          description: Publication status. Only `publish` is exposed anonymously.
+          enum:
+          - publish
+        type:
+          type: string
+          description: Object type.
+          const: page
+        link:
+          type: string
+          format: uri
+          description: Public URL of the page.
+        title:
+          type: object
+          properties: *id003
+          description: Page title.
+        content:
+          type: object
+          properties: *id003
+          description: Page body HTML.
+        excerpt:
+          type: object
+          properties: *id003
+          description: Page excerpt HTML.
+        author:
+          type: integer
+          description: Identifier of the authoring user. The Users collection itself is authentication-gated
+            (HTTP 401), so this id is not anonymously resolvable.
+        featured_media:
+          type: integer
+          description: Identifier of the featured Media attachment, or 0 when none. References `MediaItem.id`.
+        parent:
+          type: integer
+          description: Identifier of the parent page, or 0 for a top-level page. References `Page.id`.
+        menu_order:
+          type: integer
+          description: Ordering value used in navigation.
+        yoast_head:
+          type:
+          - string
+          - 'null'
+          description: Rendered SEO `<head>` markup injected by the Yoast SEO plugin.
+        yoast_head_json:
+          type:
+          - object
+          - 'null'
+          description: Parsed structured form of the Yoast SEO head, including the schema.org JSON-LD
+            graph.
+          additionalProperties: true
+        _links:
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
+        with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.

@@ -1,0 +1,355 @@
+# Aegis Marine Shipmanagement Discovery API
+# generated: '2026-09-09'
+# method: derived
+# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+openapi: 3.1.0
+info:
+  title: Aegis Marine Shipmanagement Discovery API
+  description: Anonymous discovery metadata for aegisships.com — the self-describing route index (90 routes
+    across 6 namespaces at capture), the registered content types and taxonomies, and the publication
+    statuses. Aegis Marine Shipmanagement publishes no developer documentation, so this index is the only
+    description of the surface that exists, and it is emitted by WordPress rather than authored by the
+    company.
+  version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
+  contact:
+    name: Aegis Marine Shipmanagement
+    email: info@aegisships.com
+    url: https://aegisships.com/contact/
+  x-generated-by: API Evangelist enrichment pipeline (local-v3)
+  x-generated-from: live route index + observed responses at https://aegisships.com/wp-json/
+  x-provenance:
+    generated: '2026-09-09'
+    method: derived
+    source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+    note: Derived from the site's own self-describing WordPress route index and from responses actually
+      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
+      core, not a product API authored by Aegis Marine Shipmanagement.
+servers:
+- url: https://aegisships.com/wp-json
+  description: WordPress REST API root for aegisships.com
+tags:
+- name: Discovery
+paths:
+  /:
+    get:
+      operationId: getApiIndex
+      tags:
+      - Discovery
+      summary: Retrieve the API index
+      description: 'Returns the self-describing root document: site name, URL, the registered namespaces
+        and the full route index. This document is what makes the surface machine-readable in the absence
+        of any published developer documentation. 90 routes across 6 namespaces at capture.'
+      parameters:
+      - &id001
+        description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
+      responses:
+        '200':
+          description: The API index.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+              example:
+                name: Aegis Marine Shipmanagement
+                description: ''
+                url: https://aegisships.com
+                home: https://aegisships.com
+                gmt_offset: '0'
+                namespaces:
+                - oembed/1.0
+                - contact-form-7/v1
+                - wordfence/v1
+                - yoast/v1
+                - wp/v2
+                - wp-site-health/v1
+                authentication: []
+  /wp/v2/types:
+    get:
+      operationId: getTypes
+      tags:
+      - Discovery
+      summary: List content types
+      description: Returns the registered content types and their `rest_base` values. Only WordPress core
+        types are registered — there is no site-specific custom post type.
+      parameters:
+      - *id001
+      responses:
+        '200':
+          description: Registered content types keyed by slug.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/ContentType'
+  /wp/v2/types/{type}:
+    get:
+      operationId: getType
+      tags:
+      - Discovery
+      summary: Retrieve a content type
+      description: Returns a single registered content type by slug, e.g. `page`.
+      parameters:
+      - name: type
+        in: path
+        required: true
+        description: Content type slug.
+        schema:
+          type: string
+      - *id001
+      responses:
+        '200':
+          description: The content type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentType'
+        '404': &id002
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+  /wp/v2/taxonomies:
+    get:
+      operationId: getTaxonomies
+      tags:
+      - Discovery
+      summary: List taxonomies
+      description: Returns the registered taxonomies (`category`, `post_tag`) and the content types each
+        applies to.
+      parameters:
+      - *id001
+      responses:
+        '200':
+          description: Registered taxonomies keyed by slug.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Taxonomy'
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      operationId: getTaxonomy
+      tags:
+      - Discovery
+      summary: Retrieve a taxonomy
+      description: Returns a single registered taxonomy by slug.
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: Taxonomy slug.
+        schema:
+          type: string
+      - *id001
+      responses:
+        '200':
+          description: The taxonomy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taxonomy'
+        '404': *id002
+  /wp/v2/statuses:
+    get:
+      operationId: getStatuses
+      tags:
+      - Discovery
+      summary: List publication statuses
+      description: Returns the publication statuses visible anonymously. Only `publish` is exposed.
+      parameters:
+      - *id001
+      responses:
+        '200':
+          description: Publication statuses keyed by slug.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Status'
+              example:
+                publish:
+                  name: Published
+                  public: true
+                  queryable: true
+                  slug: publish
+                  date_floating: false
+  /wp/v2/statuses/{status}:
+    get:
+      operationId: getStatus
+      tags:
+      - Discovery
+      summary: Retrieve a publication status
+      description: Returns a single publication status by slug.
+      parameters:
+      - name: status
+        in: path
+        required: true
+        description: Status slug.
+        schema:
+          type: string
+      - *id001
+      responses:
+        '200':
+          description: The publication status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404': *id002
+components:
+  schemas:
+    ApiIndex:
+      type: object
+      description: Self-describing root document of the WordPress REST API.
+      properties:
+        name:
+          type: string
+          description: Site name.
+        description:
+          type: string
+          description: Site tagline. Empty on this site.
+        url:
+          type: string
+          format: uri
+          description: Site URL.
+        home:
+          type: string
+          format: uri
+          description: Site home URL.
+        gmt_offset:
+          type:
+          - string
+          - number
+          description: Site timezone offset from GMT.
+        namespaces:
+          type: array
+          items:
+            type: string
+          description: Registered REST namespaces.
+        authentication:
+          type: object
+          description: Advertised authentication schemes. Empty on this site — no anonymous-facing auth
+            scheme is advertised.
+          additionalProperties: true
+        routes:
+          type: object
+          description: Full route index keyed by route pattern.
+          additionalProperties: true
+        _links: &id003
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
+    ContentType:
+      type: object
+      description: A registered content type.
+      properties:
+        name:
+          type: string
+          description: Human-readable label.
+        slug:
+          type: string
+          description: Type slug.
+        description:
+          type: string
+          description: Type description.
+        hierarchical:
+          type: boolean
+          description: Whether the type supports parent/child nesting.
+        rest_base:
+          type: string
+          description: Path segment under `/wp/v2` where the collection lives.
+        taxonomies:
+          type: array
+          items:
+            type: string
+          description: Taxonomies applying to this type.
+        _links: *id003
+    Taxonomy:
+      type: object
+      description: A registered taxonomy.
+      properties:
+        name:
+          type: string
+          description: Human-readable label.
+        slug:
+          type: string
+          description: Taxonomy slug.
+        description:
+          type: string
+          description: Taxonomy description.
+        types:
+          type: array
+          items:
+            type: string
+          description: Content types this taxonomy applies to.
+        hierarchical:
+          type: boolean
+          description: Whether terms can nest.
+        rest_base:
+          type: string
+          description: Path segment under `/wp/v2` where the terms live.
+        _links: *id003
+    Status:
+      type: object
+      description: A publication status.
+      properties:
+        name:
+          type: string
+          description: Human-readable label.
+        slug:
+          type: string
+          description: Status slug.
+        public:
+          type: boolean
+          description: Whether objects in this status are publicly visible.
+        queryable:
+          type: boolean
+          description: Whether the status can be queried.
+        date_floating:
+          type: boolean
+          description: Whether the publication date floats.
+        _links: *id003
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
+        with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.

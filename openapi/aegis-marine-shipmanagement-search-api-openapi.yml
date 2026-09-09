@@ -1,0 +1,198 @@
+# Aegis Marine Shipmanagement Search API
+# generated: '2026-09-09'
+# method: derived
+# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+openapi: 3.1.0
+info:
+  title: Aegis Marine Shipmanagement Search API
+  description: Anonymous cross-content search over aegisships.com, returning lightweight id / title /
+    url / type / subtype records. 15 objects were searchable at capture — all of them pages, since the
+    site has no published posts.
+  version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
+  contact:
+    name: Aegis Marine Shipmanagement
+    email: info@aegisships.com
+    url: https://aegisships.com/contact/
+  x-generated-by: API Evangelist enrichment pipeline (local-v3)
+  x-generated-from: live route index + observed responses at https://aegisships.com/wp-json/
+  x-provenance:
+    generated: '2026-09-09'
+    method: derived
+    source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+    note: Derived from the site's own self-describing WordPress route index and from responses actually
+      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
+      core, not a product API authored by Aegis Marine Shipmanagement.
+servers:
+- url: https://aegisships.com/wp-json
+  description: WordPress REST API root for aegisships.com
+tags:
+- name: Search
+paths:
+  /wp/v2/search:
+    get:
+      operationId: search
+      tags:
+      - Search
+      summary: Search site content
+      description: Searches published site content and returns lightweight result records. `X-WP-Total`
+        read 15 when captured.
+      parameters:
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
+      - name: page
+        in: query
+        required: false
+        description: Current page of the collection.
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: per_page
+        in: query
+        required: false
+        description: Maximum number of items returned per page. The API rejects values above 100 with
+          HTTP 400 `rest_invalid_param`.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+      - name: search
+        in: query
+        required: false
+        description: Limit results to those matching a search string.
+        schema:
+          type: string
+      - name: order
+        in: query
+        required: false
+        description: Sort order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: type
+        in: query
+        required: false
+        description: Limit results to a coarse object type.
+        schema:
+          type: string
+          enum:
+          - post
+          - term
+          - post-format
+      - name: subtype
+        in: query
+        required: false
+        description: Limit results to specific object subtypes, e.g. `page`.
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages`
+            response headers.
+          headers:
+            X-WP-Total:
+              description: Total number of matching objects.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 `next`/`prev` pagination links.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+              example:
+              - id: 477
+                title: Disclaimer
+                url: https://aegisships.com/disclaimer/
+                type: post
+                subtype: page
+        '400':
+          description: '`rest_invalid_param` — a query parameter failed validation (observed on `per_page=200`).'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+components:
+  schemas:
+    SearchResult:
+      type: object
+      description: A lightweight cross-content search result.
+      properties:
+        id:
+          type: integer
+          description: Identifier of the matched object. References `Page.id` when `subtype` is `page`.
+        title:
+          type: string
+          description: Title of the matched object.
+        url:
+          type: string
+          format: uri
+          description: Public URL of the matched object.
+        type:
+          type: string
+          description: Coarse result type.
+          enum:
+          - post
+          - term
+          - post-format
+        subtype:
+          type: string
+          description: Concrete object subtype, e.g. `page`.
+        _links:
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
+        with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.

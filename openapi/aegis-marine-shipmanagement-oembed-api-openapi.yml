@@ -1,0 +1,152 @@
+# Aegis Marine Shipmanagement oEmbed API
+# generated: '2026-09-09'
+# method: derived
+# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+openapi: 3.1.0
+info:
+  title: Aegis Marine Shipmanagement oEmbed API
+  description: Public oEmbed 1.0 provider endpoint for aegisships.com URLs. Returns embeddable rich metadata
+    — title, provider, dimensions and iframe HTML — for any page on the site, without scraping the page
+    markup.
+  version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
+  contact:
+    name: Aegis Marine Shipmanagement
+    email: info@aegisships.com
+    url: https://aegisships.com/contact/
+  x-generated-by: API Evangelist enrichment pipeline (local-v3)
+  x-generated-from: live route index + observed responses at https://aegisships.com/wp-json/
+  x-provenance:
+    generated: '2026-09-09'
+    method: derived
+    source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+    note: Derived from the site's own self-describing WordPress route index and from responses actually
+      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
+      core, not a product API authored by Aegis Marine Shipmanagement.
+servers:
+- url: https://aegisships.com/wp-json
+  description: WordPress REST API root for aegisships.com
+tags:
+- name: oEmbed
+paths:
+  /oembed/1.0/embed:
+    get:
+      operationId: getOembed
+      tags:
+      - oEmbed
+      summary: Retrieve oEmbed data for a URL
+      description: Returns oEmbed 1.0 rich metadata for an aegisships.com URL. Requests for URLs outside
+        this site are rejected.
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The aegisships.com URL to embed.
+        schema:
+          type: string
+          format: uri
+      - name: format
+        in: query
+        required: false
+        description: Response format.
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: maxwidth
+        in: query
+        required: false
+        description: Maximum embed width in pixels.
+        schema:
+          type: integer
+          default: 600
+      - name: maxheight
+        in: query
+        required: false
+        description: Maximum embed height in pixels.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: oEmbed 1.0 rich response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OEmbedResponse'
+              example:
+                version: '1.0'
+                provider_name: Aegis Marine Shipmanagement
+                provider_url: https://aegisships.com
+                title: Services - Aegis Marine Shipmanagement
+                type: rich
+                width: 600
+                height: 338
+        '404':
+          description: '`oembed_invalid_url` — the URL does not resolve to an embeddable object on this
+            site.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    OEmbedResponse:
+      type: object
+      description: An oEmbed 1.0 `rich` response.
+      properties:
+        version:
+          type: string
+          description: oEmbed spec version.
+          const: '1.0'
+        provider_name:
+          type: string
+          description: Provider name — `Aegis Marine Shipmanagement`.
+        provider_url:
+          type: string
+          format: uri
+          description: Provider URL.
+        title:
+          type: string
+          description: Title of the embedded object.
+        type:
+          type: string
+          description: oEmbed response type.
+          enum:
+          - rich
+          - link
+        width:
+          type: integer
+          description: Embed width in pixels.
+        height:
+          type: integer
+          description: Embed height in pixels.
+        html:
+          type: string
+          description: HTML markup that renders the embed.
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
+        with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.

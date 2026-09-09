@@ -1,0 +1,34 @@
+generated: '2026-09-09'
+method: searched
+source: >-
+  Registry and web searches on 2026-09-09 across npm, PyPI, RubyGems, crates.io, NuGet, Maven
+  Central, pkg.go.dev and Packagist, plus a review of aegisships.com and its 15 pages for SDK, CLI
+  or source-code links.
+provider: Aegis Marine Shipmanagement
+package_count: 0
+packages: []
+official_sdk_count: 0
+detail: >-
+  Aegis Marine Shipmanagement publishes no client libraries. It operates no developer program, no
+  GitHub organization and no source-code presence, and its website links to no SDK, CLI or code
+  sample. No `SDKs` pointer is emitted in apis.yml, because there is no first-party SDK to point at.
+version_note: >-
+  No `version:` or `published:` field is recorded on any entry because there are no entries. This is
+  a checked absence, not an unchecked field.
+rejected_candidates:
+- name: aegis-sdk
+  registry: npm / PyPI (via github.com/aegis-initiative/aegis-sdk)
+  official: false
+  version: null
+  published: null
+  reason: >-
+    Ownership check failed. This package belongs to the `aegis-initiative` GitHub organization and
+    describes client libraries for the AEGIS governance APIs and the AGP-1 runtime — an unrelated
+    project that merely shares the word "Aegis". It has no connection to Aegis Marine
+    Shipmanagement Inc. of Georgetown, Guyana, and was deliberately not recorded as a package of
+    this provider.
+consumable_without_sdk:
+  note: >-
+    The WordPress core REST API captured in openapi/ is callable with any HTTP client and needs no
+    credential, so the absence of an SDK is not an access barrier. Generic third-party WordPress
+    clients exist but are not first-party to this provider and are not recorded here.

@@ -1,0 +1,45 @@
+generated: '2026-09-09'
+method: generated
+source: >-
+  Generated from the seven OpenAPI documents in openapi/ and the artifacts in conventions/, errors/
+  and authentication/. Every operationId referenced in these skills was verified against the specs,
+  which were themselves derived from the live route index at https://aegisships.com/wp-json/.
+provider: Aegis Marine Shipmanagement
+provider_published: false
+provider_published_note: >-
+  Aegis Marine Shipmanagement publishes no skills, AGENTS.md or agent instructions. These are
+  authored by API Evangelist from the observed contract.
+scope_note: >-
+  These skills operate on a corporate website's content API. They can read the company's published
+  pages, imagery and taxonomy. They cannot read fleet, vessel, voyage, charter or crew data — none
+  of that is exposed on any public surface.
+skills:
+- file: aegis-marine-shipmanagement-read-company-profile.md
+  name: read-aegis-company-profile
+  description: >-
+    Read Aegis Marine Shipmanagement's published corporate profile — services, fleet posture,
+    operations and leadership — from the site's own content API instead of scraping HTML.
+  operations:
+  - getPages
+  - getPage
+  - search
+- file: aegis-marine-shipmanagement-browse-media-library.md
+  name: browse-aegis-media-library
+  description: >-
+    Enumerate and filter the 121 media attachments behind aegisships.com and resolve each to its
+    original file URL.
+  operations:
+  - getMediaItems
+  - getMediaItem
+- file: aegis-marine-shipmanagement-inspect-surface.md
+  name: inspect-aegis-api-surface
+  description: >-
+    Discover what this undocumented API actually exposes by reading its self-describing route
+    index, content types, taxonomies and statuses.
+  operations:
+  - getApiIndex
+  - getTypes
+  - getTaxonomies
+  - getStatuses
+  - getCategories
+  - getTags

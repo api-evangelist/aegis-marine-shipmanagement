@@ -1,0 +1,142 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  openapi/aegis-marine-shipmanagement-pages-api-openapi.yml,
+  openapi/aegis-marine-shipmanagement-media-api-openapi.yml,
+  openapi/aegis-marine-shipmanagement-taxonomy-api-openapi.yml,
+  openapi/aegis-marine-shipmanagement-search-api-openapi.yml — plus the live object counts observed
+  at https://aegisships.com/wp-json/ on 2026-09-09.
+provider: Aegis Marine Shipmanagement
+summary: >-
+  A WordPress core content graph, not a maritime domain model. There is no Vessel, Voyage, Charter,
+  Crew or Port entity anywhere on this surface — the objects are the marketing site's pages, images
+  and taxonomy terms.
+entities:
+- name: Page
+  rest_base: pages
+  count_observed: 15
+  identifier: id
+  identifier_type: integer
+  description: >-
+    A published page of aegisships.com. Self-nesting: the four About children (Company Profile, CEO
+    Note, Board of Directors, Operations) reference the About page as parent.
+  key_fields:
+  - id
+  - slug
+  - title.rendered
+  - link
+  - parent
+  - featured_media
+  - author
+  - modified
+- name: MediaItem
+  rest_base: media
+  count_observed: 121
+  identifier: id
+  identifier_type: integer
+  description: A media library attachment — vessel and corporate imagery, logos, page assets.
+  key_fields:
+  - id
+  - slug
+  - source_url
+  - mime_type
+  - media_type
+  - post
+  - author
+- name: Category
+  rest_base: categories
+  count_observed: 1
+  identifier: id
+  identifier_type: integer
+  description: A hierarchical `category` term. Only `News` exists, with a count of 0.
+  key_fields:
+  - id
+  - slug
+  - name
+  - parent
+  - count
+- name: Tag
+  rest_base: tags
+  count_observed: 25
+  identifier: id
+  identifier_type: integer
+  description: >-
+    A flat `post_tag` term. All 25 report a count of 0. Their names (Copenhagen, Metro, Motorway,
+    Warsaw, Renovation, Spiecag) do not describe this company's content and are consistent with
+    unremoved demo data shipped by the site's theme.
+  key_fields:
+  - id
+  - slug
+  - name
+  - count
+- name: SearchResult
+  rest_base: search
+  count_observed: 15
+  identifier: id
+  identifier_type: integer
+  description: >-
+    A projection, not a stored entity — a lightweight view over searchable objects that points back
+    at the concrete record via `_links.self`.
+  key_fields:
+  - id
+  - title
+  - url
+  - type
+  - subtype
+- name: User
+  rest_base: users
+  count_observed: null
+  identifier: id
+  identifier_type: integer
+  description: >-
+    Referenced but not readable. Page and media records carry `author: 1`, but /wp/v2/users returns
+    HTTP 401 `rest_user_cannot_view`, so the entity cannot be resolved anonymously.
+  gated: true
+relationships:
+- from: Page
+  to: Page
+  type: belongs_to
+  via: parent
+  cardinality: many_to_one
+  note: 0 means top-level. Observed — pages 433, 434, 437 and 439 all have parent 429 (About).
+- from: Page
+  to: MediaItem
+  type: has_one
+  via: featured_media
+  cardinality: many_to_one
+  note: 0 means none. Every page observed reported 0.
+- from: MediaItem
+  to: Page
+  type: belongs_to
+  via: post
+  cardinality: many_to_one
+  note: The object the attachment was uploaded to; may be null for unattached library items.
+- from: Page
+  to: User
+  type: belongs_to
+  via: author
+  cardinality: many_to_one
+  note: Unresolvable anonymously — the Users collection is 401-gated.
+- from: MediaItem
+  to: User
+  type: belongs_to
+  via: author
+  cardinality: many_to_one
+  note: Unresolvable anonymously.
+- from: Category
+  to: Category
+  type: belongs_to
+  via: parent
+  cardinality: many_to_one
+  note: The taxonomy is hierarchical but only one term exists, with parent 0.
+- from: SearchResult
+  to: Page
+  type: has_one
+  via: id
+  cardinality: one_to_one
+  note: Resolved through `_links.self` when `subtype` is `page`. All 15 results are pages.
+absent_relationships:
+- note: >-
+    Post and Comment collections are registered and anonymously readable but both return
+    X-WP-Total 0, so the Category and Tag taxonomies have nothing attached to them. The
+    Post-to-Category and Post-to-Tag edges that would normally carry this graph do not exist here.

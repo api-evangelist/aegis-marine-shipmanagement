@@ -1,0 +1,55 @@
+# API Evangelist enhancement overlay
+# generated: '2026-09-09'
+# method: generated
+# source: openapi/aegis-marine-shipmanagement-discovery-api-openapi.yml
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Aegis Marine Shipmanagement Discovery API
+  version: 1.0.0
+  x-provenance:
+    generated: '2026-09-09'
+    method: generated
+    source: openapi/aegis-marine-shipmanagement-discovery-api-openapi.yml
+    note: Records API Evangelist's enhancements over the provider's surface. Aegis Marine Shipmanagement
+      publishes no OpenAPI; the target document is itself derived by this pipeline from the live WordPress
+      route index. This overlay is never applied to the target in place.
+extends: ./aegis-marine-shipmanagement-discovery-api-openapi.yml
+actions:
+- target: $.info
+  description: Mark the contract as third-party-derived, not provider-published.
+  update:
+    x-api-evangelist:
+      profile: https://apis.io/provider/aegis-marine-shipmanagement/
+      contract-authorship: derived-by-api-evangelist
+      provider-publishes-openapi: false
+      surface-class: wordpress-core-rest
+      product-api: false
+      note: WordPress core content API behind the corporate website. Not a shipping, chartering, fleet
+        or crew data product.
+- target: $.info
+  description: Record freshness observed on the live surface.
+  update:
+    x-content-freshness:
+      newest-page-modified: '2019-08-26'
+      newest-media-upload: '2019-05-20'
+      published-posts: 0
+      observed: '2026-09-09'
+- target: $
+  description: Attach the cross-cutting artifacts this pipeline derived alongside the contract.
+  update:
+    x-artifacts:
+      authentication: authentication/aegis-marine-shipmanagement-authentication.yml
+      conventions: conventions/aegis-marine-shipmanagement-conventions.yml
+      errors: errors/aegis-marine-shipmanagement-problem-types.yml
+      conformance: conformance/aegis-marine-shipmanagement-conformance.yml
+      lifecycle: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+      rate-limits: rate-limits/aegis-marine-shipmanagement-rate-limits.yml
+      data-model: data-model/aegis-marine-shipmanagement-data-model.yml
+      examples: examples/aegis-marine-shipmanagement-examples.yml
+- target: $.paths.*.get
+  description: Flag every operation as anonymously readable with no credential.
+  update:
+    x-access:
+      anonymous: true
+      credential-required: false
+      read-only: true

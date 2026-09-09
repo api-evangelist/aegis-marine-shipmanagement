@@ -1,18 +1,259 @@
 aid: aegis-marine-shipmanagement
 name: Aegis Marine Shipmanagement
-description: 'Aegis Marine Shipmanagement is a company surfaced via the API Evangelist harvest backlog
-  (source: secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Aegis Marine Shipmanagement Inc. is a privately owned marine vessel transportation and ship
+  management company headquartered at 215 South Road and King Street, Lacytown, Georgetown, Guyana,
+  with a secondary office in Brooklyn, New York. Founded in 2018 by Guyanese-American businessman
+  Sean Clarke, it serves the oil and gas sector, operating crude oil tankers, liquefied natural gas
+  tankers and offshore support service vessels on behalf of third-party owners, partners and
+  investors. Its services span commercial, technical, safety and quality, and logistics ship
+  management, delivered through partnerships with established marine service providers, and include
+  vessel registration under various flags, technical inspection and marine engine spares, marine
+  vessel chartering, commodity trader engagement, and crew management covering recruitment,
+  familiarization, training, retention and career promotion. Aegis Marine Shipmanagement is a
+  shipping operator rather than a software vendor. It publishes no developer portal, no API
+  documentation, no SDKs and no commercial or partner-facing product API. The only machine-readable
+  interface it exposes is the WordPress core REST content API behind its corporate website at
+  aegisships.com, which is captured here for discovery purposes: it is anonymously readable,
+  effectively read-only, and serves the marketing site's own pages, media and taxonomy rather than
+  any fleet, chartering or vessel-operations data.
 url: https://raw.githubusercontent.com/api-evangelist/aegis-marine-shipmanagement/refs/heads/main/apis.yml
+image: https://aegisships.com/wp-content/uploads/2018/11/cropped-favicon-192x192.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+position: Producing
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: false
+  callable_host: true
+  label: Public read-only website content API, no commercial API product
+  confidence: high
+  source:
+  - openapi
+  - plans
+  generated: '2026-09-09'
+  method: derived
+accessModel:
+  pricing: none
+  onboarding: none
+  trial: false
+  try_now: true
+  public: true
+  label: Anonymously readable, no signup, no key
+  confidence: high
+  source:
+  - authentication
+  generated: '2026-09-09'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-09-09'
 modified: '2026-09-09'
 tags:
 - Company
-apis: []
+- Shipping
+- Ship Management
+- Maritime
+- Marine Transportation
+- Oil and Gas
+- Crude Oil Tankers
+- LNG
+- Offshore
+- Chartering
+- Crew Management
+- Logistics
+- Guyana
+- Content
+apis:
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-pages-api
+  name: Aegis Marine Shipmanagement Pages API
+  description: >-
+    Anonymous, unauthenticated read access to the 15 published pages behind aegisships.com — Homepage,
+    About and its Company Profile, CEO Note, Board of Directors and Operations children, Fleet, Fleet
+    Selection, Fleet Management, Services, News, Contact, Affiliate, Privacy Policy and Disclaimer.
+    Verified live at 15 pages, all last modified between 2018 and 2019.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Pages
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-pages-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-pages-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: DataModel
+    url: data-model/aegis-marine-shipmanagement-data-model.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-media-api
+  name: Aegis Marine Shipmanagement Media API
+  description: >-
+    Anonymous, unauthenticated read access to the media library behind aegisships.com — vessel and
+    corporate photography, logos and page imagery with their generated size variants and MIME
+    metadata. Verified live at 121 attachments, the most recent dated 2019.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Media
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-media-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-media-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: DataModel
+    url: data-model/aegis-marine-shipmanagement-data-model.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-taxonomy-api
+  name: Aegis Marine Shipmanagement Taxonomy API
+  description: >-
+    Anonymous, unauthenticated read access to the two content taxonomies on aegisships.com — one
+    category term (News) and 25 post tags. Every term reports a count of zero because the site
+    publishes no posts, so the taxonomy is an empty classification scaffold rather than an active
+    index.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Categories
+  - Tags
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-taxonomy-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-taxonomy-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: DataModel
+    url: data-model/aegis-marine-shipmanagement-data-model.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-search-api
+  name: Aegis Marine Shipmanagement Search API
+  description: >-
+    Anonymous, unauthenticated cross-content search over aegisships.com, returning lightweight
+    id, title, url, type and subtype records. Verified live at 15 searchable objects, all of them
+    pages.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Search
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-search-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-search-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-discovery-api
+  name: Aegis Marine Shipmanagement Discovery API
+  description: >-
+    Anonymous discovery metadata for aegisships.com — the self-describing route index (90 routes
+    across 6 namespaces at capture), the registered content types and taxonomies, and the
+    publication statuses. Because the company publishes no developer documentation, this index is
+    the only description of the surface that exists.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Discovery
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-discovery-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-discovery-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-oembed-api
+  name: Aegis Marine Shipmanagement oEmbed API
+  description: >-
+    Public oEmbed 1.0 provider endpoint for aegisships.com URLs, returning embeddable rich metadata
+    — title, provider, dimensions and iframe HTML — for any page on the site without parsing its
+    markup.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - oEmbed
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-oembed-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-oembed-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-seo-api
+  name: Aegis Marine Shipmanagement SEO Metadata API
+  description: >-
+    Public Yoast SEO endpoint returning the rendered head metadata, and its parsed schema.org
+    JSON-LD graph, for any aegisships.com URL — a structured-data view of every page without
+    scraping the HTML. Provided by the Yoast SEO plugin (v15.6.2 at capture).
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - SEO
+  - Metadata
+  - JSON-LD
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-seo-api-openapi.yml
+  - type: Overlay
+    url: overlays/aegis-marine-shipmanagement-seo-api-overlay.yaml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +261,76 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://aegisships.com/
+- type: About
+  url: https://aegisships.com/about/
+- type: Services
+  url: https://aegisships.com/services/
+- type: Newsroom
+  url: https://aegisships.com/news/
+- type: Contact
+  url: https://aegisships.com/contact/
+- type: Partners
+  url: https://aegisships.com/affiliate/
+- type: PrivacyPolicy
+  url: https://aegisships.com/privacy-policy-2/
+- type: TermsOfService
+  url: https://aegisships.com/disclaimer/
+- type: Authentication
+  url: authentication/aegis-marine-shipmanagement-authentication.yml
+- type: ErrorCatalog
+  url: errors/aegis-marine-shipmanagement-problem-types.yml
+- type: Conventions
+  url: conventions/aegis-marine-shipmanagement-conventions.yml
+- type: DataModel
+  url: data-model/aegis-marine-shipmanagement-data-model.yml
+- type: Conformance
+  url: conformance/aegis-marine-shipmanagement-conformance.yml
+- type: Lifecycle
+  url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/aegis-marine-shipmanagement-rate-limits.yml
+- type: Plans
+  url: plans/aegis-marine-shipmanagement-plans-pricing.yml
+- type: Packages
+  url: packages/aegis-marine-shipmanagement-packages.yml
+- type: Examples
+  url: examples/aegis-marine-shipmanagement-examples.yml
+- type: LLMsTxt
+  url: llms/aegis-marine-shipmanagement-llms.txt
+- type: MCPServer
+  url: mcp/aegis-marine-shipmanagement-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/aegis-marine-shipmanagement-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/aegis-marine-shipmanagement-domain-security.yml
+x-enrichment:
+  date: '2026-09-09'
+  status: minimal
+  artifacts_added: 33
+  pass: local-v3
+x-coverage:
+  state: none
+  reason: not-a-software-company
+  detail: >-
+    Aegis Marine Shipmanagement is a Georgetown, Guyana ship manager whose product is crude oil and
+    LNG vessel operation under commercial contract, not software; every artifact in this repo was
+    derived by API Evangelist from the WordPress core REST API behind its 2019-era marketing site,
+    because the company itself publishes no OpenAPI, developer portal, SDK, changelog, status page
+    or /.well-known/ document on any host.
+  evidence:
+  - url: https://aegisships.com/wp-json/
+    status: 200
+  - url: https://aegisships.com/openapi.json
+    status: 404
+  - url: https://aegisships.com/llms.txt
+    status: 404
+  - url: https://aegisships.com/.well-known/agent-card.json
+    status: 404
+  - url: https://aegisships.com/.well-known/security.txt
+    status: 404
+  - url: https://aegisships.com/wp-json/wp/v2/posts?per_page=1
+    status: 200
+  checked: '2026-09-09'

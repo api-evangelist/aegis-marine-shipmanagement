@@ -1,0 +1,78 @@
+generated: '2026-09-09'
+method: probed
+source: >-
+  Error responses observed live against https://aegisships.com/wp-json/ on 2026-09-09, cross-checked
+  against the derived OpenAPI documents in openapi/.
+provider: Aegis Marine Shipmanagement
+format: wordpress-rest-error
+format_note: >-
+  Not RFC 9457. The API returns `application/json` (never `application/problem+json`) with a
+  WordPress-native envelope of `code`, `message` and `data`. The HTTP status is duplicated inside
+  `data.status`, and per-parameter validation detail appears under `data.params`.
+envelope:
+  media_type: application/json
+  fields:
+  - name: code
+    type: string
+    description: Machine-readable error identifier, e.g. `rest_post_invalid_id`.
+  - name: message
+    type: string
+    description: Human-readable message, in English only.
+  - name: data.status
+    type: integer
+    description: HTTP status code repeated in the body.
+  - name: data.params
+    type: object
+    description: Per-parameter validation messages. Present on 400 responses only.
+problem_types:
+- code: rest_invalid_param
+  status: 400
+  title: Invalid query parameter
+  detail: One or more query parameters failed validation.
+  remediation: >-
+    Read `data.params` for the offending parameter and its constraint. Most commonly `per_page`,
+    which must be between 1 and 100 inclusive.
+  observed: true
+  evidence: https://aegisships.com/wp-json/wp/v2/pages?per_page=200
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid object ID
+  detail: The requested page or media id does not exist or is not published.
+  remediation: List the collection first and use an id it returns.
+  observed: true
+  evidence: https://aegisships.com/wp-json/wp/v2/pages/999999
+- code: rest_no_route
+  status: 404
+  title: No matching route
+  detail: No route matches the requested URL and HTTP method.
+  remediation: >-
+    Fetch the route index at https://aegisships.com/wp-json/ and use a registered route. Note that
+    a route registered for POST will still return this error for a GET.
+  observed: true
+  evidence: https://aegisships.com/wp-json/wp/v2/nope
+- code: rest_user_cannot_view
+  status: 401
+  title: Not allowed to list users
+  detail: Anonymous user enumeration is denied.
+  remediation: >-
+    None available. No public credential can be obtained for this site, so the `author` id on pages
+    and media is not anonymously resolvable.
+  observed: true
+  evidence: https://aegisships.com/wp-json/wp/v2/users
+- code: rest_forbidden
+  status: 401
+  title: Operation not permitted
+  detail: The operation requires an authenticated account with sufficient capability.
+  remediation: None available publicly.
+  observed: true
+  evidence: https://aegisships.com/wp-json/wp/v2/settings
+- code: wpcf7_forbidden
+  status: 403
+  title: Contact forms not accessible
+  detail: Contact Form 7 form definitions are not publicly listable.
+  remediation: None available publicly. Use the human contact page at https://aegisships.com/contact/.
+  observed: true
+  evidence: https://aegisships.com/wp-json/contact-form-7/v1/contact-forms
+notes:
+- Error messages are not versioned or documented by the provider; they are WordPress core strings
+  and can change with a core upgrade without notice.

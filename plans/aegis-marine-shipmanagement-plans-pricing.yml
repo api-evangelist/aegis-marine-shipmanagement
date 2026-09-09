@@ -1,0 +1,26 @@
+generated: '2026-09-09'
+method: searched
+source: >-
+  https://aegisships.com/ and its 15 pages, reviewed 2026-09-09. There is no pricing page, no plans
+  page, no signup and no developer program on aegisships.com.
+provider: Aegis Marine Shipmanagement
+plan_count: 0
+plans: []
+pricing_model: none
+detail: >-
+  Aegis Marine Shipmanagement sells ship management services under commercial contract, negotiated
+  directly. It does not sell, meter or price API access, and the WordPress content API captured in
+  this repo is an incidental interface of its marketing site rather than a product. There is no
+  free tier, no paid tier and no enterprise contact-us tier for API access, because there is no API
+  product.
+access:
+  cost: free
+  signup_required: false
+  credential_required: false
+  note: >-
+    The surface is anonymously readable at no cost. That is a property of an unauthenticated
+    WordPress installation, not a published free plan.
+commercial_contact:
+  url: https://aegisships.com/contact/
+  email: info@aegisships.com
+  note: General corporate enquiries for ship management services, not API sales.

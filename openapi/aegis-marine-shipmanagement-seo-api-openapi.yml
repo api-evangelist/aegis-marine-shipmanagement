@@ -1,0 +1,104 @@
+# Aegis Marine Shipmanagement SEO Metadata API
+# generated: '2026-09-09'
+# method: derived
+# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+openapi: 3.1.0
+info:
+  title: Aegis Marine Shipmanagement SEO Metadata API
+  description: Public Yoast SEO endpoint returning the rendered `<head>` metadata, and its parsed schema.org
+    JSON-LD graph, for any aegisships.com URL. This is a structured-data view of every page without parsing
+    the HTML, provided by the Yoast SEO plugin (v15.6.2 at capture) rather than authored by the company.
+  version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
+  contact:
+    name: Aegis Marine Shipmanagement
+    email: info@aegisships.com
+    url: https://aegisships.com/contact/
+  x-generated-by: API Evangelist enrichment pipeline (local-v3)
+  x-generated-from: live route index + observed responses at https://aegisships.com/wp-json/
+  x-provenance:
+    generated: '2026-09-09'
+    method: derived
+    source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
+    note: Derived from the site's own self-describing WordPress route index and from responses actually
+      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
+      core, not a product API authored by Aegis Marine Shipmanagement.
+servers:
+- url: https://aegisships.com/wp-json
+  description: WordPress REST API root for aegisships.com
+tags:
+- name: SEO
+paths:
+  /yoast/v1/get_head:
+    get:
+      operationId: getSeoHead
+      tags:
+      - SEO
+      summary: Retrieve SEO head metadata for a URL
+      description: Returns the rendered SEO `<head>` markup and its parsed JSON-LD representation for
+        an aegisships.com URL.
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The aegisships.com URL to describe.
+        schema:
+          type: string
+          format: uri
+      responses:
+        '200':
+          description: Rendered and parsed SEO head metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeoHead'
+        '404':
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+components:
+  schemas:
+    SeoHead:
+      type: object
+      description: Yoast SEO head metadata for a URL.
+      properties:
+        html:
+          type: string
+          description: Rendered `<head>` markup, including meta tags and the schema.org JSON-LD block.
+        json:
+          type: object
+          description: Parsed representation of the head, including `title`, canonical URL, Open Graph
+            fields and the `schema` (schema.org JSON-LD graph).
+          additionalProperties: true
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
+        with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.

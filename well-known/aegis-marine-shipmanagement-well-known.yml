@@ -1,0 +1,67 @@
+generated: '2026-09-09'
+method: probed
+source: >-
+  Anonymous HTTPS probes of the named /.well-known/ path list against every host this record knows,
+  2026-09-09. Aegis Marine Shipmanagement serves no well-known discovery document on any host.
+provider: Aegis Marine Shipmanagement
+hosts:
+- host: aegisships.com
+  note: >-
+    Registrable domain, corporate website, and the host of the only API baseURL
+    (https://aegisships.com/wp-json). Docs host and API host are the same host — the company
+    publishes no separate developer or console host.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: www.aegisships.com
+  note: www variant of the registrable domain.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+summary:
+  documents_served: 0
+  hosts_probed: 2
+  paths_probed_per_host: 7
+pointer_emitted: false
+pointer_note: >-
+  No WellKnown and no SecurityTxt pointer is emitted in apis.yml, because every probed path returned
+  404 on every host. This file records a verified absence; emitting a pointer would assert that the
+  provider serves a discovery surface it does not serve.

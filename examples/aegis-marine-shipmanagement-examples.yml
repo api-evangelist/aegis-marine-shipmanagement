@@ -1,0 +1,180 @@
+generated: '2026-09-09'
+method: probed
+source: >-
+  Requests actually issued against https://aegisships.com/wp-json/ on 2026-09-09. Every response
+  body below was returned by the live API; none is illustrative or constructed.
+provider: Aegis Marine Shipmanagement
+examples:
+- name: List pages
+  operationId: getPages
+  request: GET https://aegisships.com/wp-json/wp/v2/pages?per_page=1&_fields=id,slug,title,link
+  status: 200
+  response_headers:
+    X-WP-Total: '15'
+    X-WP-TotalPages: '15'
+  response:
+  - id: 477
+    slug: disclaimer
+    title:
+      rendered: Disclaimer
+    link: https://aegisships.com/disclaimer/
+- name: Retrieve a page
+  operationId: getPage
+  request: GET https://aegisships.com/wp-json/wp/v2/pages/433
+  status: 200
+  response:
+    id: 433
+    date: '2018-11-12T10:29:56'
+    modified: '2019-01-25T10:41:41'
+    slug: company-profile
+    status: publish
+    type: page
+    link: https://aegisships.com/about/company-profile/
+    title:
+      rendered: Company Profile
+    author: 1
+    featured_media: 0
+    parent: 429
+- name: List media
+  operationId: getMediaItems
+  request: GET https://aegisships.com/wp-json/wp/v2/media?per_page=1
+  status: 200
+  response_headers:
+    X-WP-Total: '121'
+    X-WP-TotalPages: '121'
+  response:
+  - id: 767
+    date: '2019-05-20T07:54:15'
+    slug: preeminent-shipping-2
+    type: attachment
+    link: https://aegisships.com/homepage/preeminent-shipping-2/
+    title:
+      rendered: Preeminent-Shipping
+    author: 1
+    alt_text: ''
+    media_type: image
+    mime_type: image/jpeg
+    source_url: https://aegisships.com/wp-content/uploads/2019/05/Preeminent-Shipping.jpg
+- name: List categories
+  operationId: getCategories
+  request: GET https://aegisships.com/wp-json/wp/v2/categories?per_page=1
+  status: 200
+  response_headers:
+    X-WP-Total: '1'
+  response:
+  - id: 60
+    count: 0
+    link: https://aegisships.com/category/news/
+    name: News
+    slug: news
+    taxonomy: category
+    parent: 0
+- name: List tags
+  operationId: getTags
+  request: GET https://aegisships.com/wp-json/wp/v2/tags?per_page=2
+  status: 200
+  response_headers:
+    X-WP-Total: '25'
+  response:
+  - id: 16
+    count: 0
+    link: https://aegisships.com/tag/2017/
+    name: '2017'
+    slug: '2017'
+    taxonomy: post_tag
+  - id: 17
+    count: 0
+    link: https://aegisships.com/tag/21-century/
+    name: 21 Century
+    slug: 21-century
+    taxonomy: post_tag
+- name: Search site content
+  operationId: search
+  request: GET https://aegisships.com/wp-json/wp/v2/search?per_page=1
+  status: 200
+  response_headers:
+    X-WP-Total: '15'
+  response:
+  - id: 477
+    title: Disclaimer
+    url: https://aegisships.com/disclaimer/
+    type: post
+    subtype: page
+- name: Retrieve the API index
+  operationId: getApiIndex
+  request: GET https://aegisships.com/wp-json/
+  status: 200
+  response:
+    name: Aegis Marine Shipmanagement
+    description: ''
+    url: https://aegisships.com
+    home: https://aegisships.com
+    gmt_offset: '0'
+    namespaces:
+    - oembed/1.0
+    - contact-form-7/v1
+    - wordfence/v1
+    - yoast/v1
+    - wp/v2
+    - wp-site-health/v1
+    authentication: []
+  note: 90 routes were registered across those 6 namespaces at capture.
+- name: Retrieve publication statuses
+  operationId: getStatuses
+  request: GET https://aegisships.com/wp-json/wp/v2/statuses
+  status: 200
+  response:
+    publish:
+      name: Published
+      public: true
+      queryable: true
+      slug: publish
+      date_floating: false
+- name: Retrieve oEmbed data for a URL
+  operationId: getOembed
+  request: GET https://aegisships.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Faegisships.com%2Fservices%2F
+  status: 200
+  response:
+    version: '1.0'
+    provider_name: Aegis Marine Shipmanagement
+    provider_url: https://aegisships.com
+    title: Services - Aegis Marine Shipmanagement
+    type: rich
+    width: 600
+    height: 338
+  note: The `html` field was truncated here; it carries the full blockquote and embed script.
+error_examples:
+- name: Page size above the ceiling
+  request: GET https://aegisships.com/wp-json/wp/v2/pages?per_page=200
+  status: 400
+  response:
+    code: rest_invalid_param
+    message: 'Invalid parameter(s): per_page'
+    data:
+      status: 400
+      params:
+        per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+- name: Unknown object id
+  request: GET https://aegisships.com/wp-json/wp/v2/pages/999999
+  status: 404
+  response:
+    code: rest_post_invalid_id
+    message: Invalid post ID.
+    data:
+      status: 404
+- name: Unknown route
+  request: GET https://aegisships.com/wp-json/wp/v2/nope
+  status: 404
+  response:
+    code: rest_no_route
+    message: No route was found matching the URL and request method.
+    data:
+      status: 404
+- name: User enumeration denied
+  request: GET https://aegisships.com/wp-json/wp/v2/users
+  status: 401
+  response:
+    code: rest_user_cannot_view
+    message: Sorry, you are not allowed to list users.
+    data:
+      status: 401

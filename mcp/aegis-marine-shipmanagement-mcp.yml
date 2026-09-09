@@ -1,0 +1,76 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  Derived from the seven OpenAPI documents in openapi/, which were themselves derived from the live
+  route index at https://aegisships.com/wp-json/. Searches on 2026-09-09 found no MCP server —
+  hosted, remote or stdio — published by or for Aegis Marine Shipmanagement.
+provider: Aegis Marine Shipmanagement
+status: candidate
+status_note: >-
+  This is a CANDIDATE tool list computed by API Evangelist from the provider's operations. Aegis
+  Marine Shipmanagement ships no MCP server. Nothing here is running anywhere, and no endpoint below
+  is callable.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+  note: >-
+    mode `none` because no server exists to reach. The underlying REST surface needs no credential,
+    so `auth: none` describes what a server would require if one were ever built — not a
+    provisioned agent surface.
+tools:
+- name: list_pages
+  description: List the published pages of aegisships.com, with optional search and slug filters.
+  rest: getPages
+  inputSchema_source: openapi/aegis-marine-shipmanagement-pages-api-openapi.yml#/paths/~1wp~1v2~1pages/get
+- name: get_page
+  description: Retrieve a single page of aegisships.com by numeric id.
+  rest: getPage
+  inputSchema_source: openapi/aegis-marine-shipmanagement-pages-api-openapi.yml#/paths/~1wp~1v2~1pages~1{id}/get
+- name: list_media
+  description: List media library attachments, filterable by MIME type and attached object.
+  rest: getMediaItems
+  inputSchema_source: openapi/aegis-marine-shipmanagement-media-api-openapi.yml#/paths/~1wp~1v2~1media/get
+- name: get_media_item
+  description: Retrieve a single media attachment by numeric id.
+  rest: getMediaItem
+  inputSchema_source: openapi/aegis-marine-shipmanagement-media-api-openapi.yml#/paths/~1wp~1v2~1media~1{id}/get
+- name: list_categories
+  description: List category terms.
+  rest: getCategories
+  inputSchema_source: openapi/aegis-marine-shipmanagement-taxonomy-api-openapi.yml#/paths/~1wp~1v2~1categories/get
+- name: list_tags
+  description: List post tag terms.
+  rest: getTags
+  inputSchema_source: openapi/aegis-marine-shipmanagement-taxonomy-api-openapi.yml#/paths/~1wp~1v2~1tags/get
+- name: search_site
+  description: Cross-content search over aegisships.com returning id, title, url, type and subtype.
+  rest: search
+  inputSchema_source: openapi/aegis-marine-shipmanagement-search-api-openapi.yml#/paths/~1wp~1v2~1search/get
+- name: get_api_index
+  description: Retrieve the self-describing route index, namespaces and site metadata.
+  rest: getApiIndex
+  inputSchema_source: openapi/aegis-marine-shipmanagement-discovery-api-openapi.yml#/paths/~1/get
+- name: get_oembed
+  description: Retrieve oEmbed 1.0 rich metadata for an aegisships.com URL.
+  rest: getOembed
+  inputSchema_source: openapi/aegis-marine-shipmanagement-oembed-api-openapi.yml#/paths/~1oembed~11.0~1embed/get
+- name: get_seo_head
+  description: Retrieve rendered SEO head metadata and the schema.org JSON-LD graph for a URL.
+  rest: getSeoHead
+  inputSchema_source: openapi/aegis-marine-shipmanagement-seo-api-openapi.yml#/paths/~1yoast~1v1~1get_head/get
+tool_count: 10
+read_only: true
+read_only_note: >-
+  Every candidate tool is a read. There is no write, no side effect and nothing to confirm before
+  acting, because the public surface exposes no mutating operation.
+search_evidence:
+- query: hosted or remote MCP server published by Aegis Marine Shipmanagement
+  result: none found
+- url: https://aegisships.com/.well-known/ai-plugin.json
+  status: 404
+- url: https://aegisships.com/.well-known/agent-card.json
+  status: 404

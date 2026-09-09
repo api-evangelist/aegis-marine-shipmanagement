@@ -1,0 +1,115 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  mcp/aegis-marine-shipmanagement-mcp.yml bound to the seven OpenAPI documents in openapi/. Both
+  sides derive from the same live route index at https://aegisships.com/wp-json/, so every binding
+  is exact.
+provider: Aegis Marine Shipmanagement
+surfaces:
+  openapi:
+    present: true
+    documents: 7
+    operations: 18
+    path: openapi/
+    gated: false
+  graphql:
+    present: false
+    endpoint: null
+  mcp:
+    present: false
+    url: null
+    gated: false
+    note: >-
+      No MCP server exists. The tool side of this crosswalk is the CANDIDATE list in
+      mcp/aegis-marine-shipmanagement-mcp.yml, not a live tools/list response.
+crosswalk:
+- tool: list_pages
+  category: content
+  rest:
+  - getPages
+  binding: one-to-one
+  confidence: high
+- tool: get_page
+  category: content
+  rest:
+  - getPage
+  binding: one-to-one
+  confidence: high
+- tool: list_media
+  category: media
+  rest:
+  - getMediaItems
+  binding: one-to-one
+  confidence: high
+- tool: get_media_item
+  category: media
+  rest:
+  - getMediaItem
+  binding: one-to-one
+  confidence: high
+- tool: list_categories
+  category: taxonomy
+  rest:
+  - getCategories
+  binding: one-to-one
+  confidence: high
+- tool: list_tags
+  category: taxonomy
+  rest:
+  - getTags
+  binding: one-to-one
+  confidence: high
+- tool: search_site
+  category: search
+  rest:
+  - search
+  binding: one-to-one
+  confidence: high
+- tool: get_api_index
+  category: discovery
+  rest:
+  - getApiIndex
+  binding: one-to-one
+  confidence: high
+- tool: get_oembed
+  category: metadata
+  rest:
+  - getOembed
+  binding: one-to-one
+  confidence: high
+- tool: get_seo_head
+  category: metadata
+  rest:
+  - getSeoHead
+  binding: one-to-one
+  confidence: high
+mcp_only: []
+mcp_only_note: >-
+  None. The candidate tools were derived from the REST operations, so no tool can exist without a
+  backing operation.
+rest_only:
+- operationId: getCategory
+  reason: Single-term retrieval folded into list_categories; only one category term exists.
+- operationId: getTag
+  reason: Single-term retrieval folded into list_tags.
+- operationId: getTypes
+  reason: Discovery detail not surfaced as a separate tool; covered by get_api_index.
+- operationId: getType
+  reason: Discovery detail not surfaced as a separate tool.
+- operationId: getTaxonomies
+  reason: Discovery detail not surfaced as a separate tool.
+- operationId: getTaxonomy
+  reason: Discovery detail not surfaced as a separate tool.
+- operationId: getStatuses
+  reason: Discovery detail not surfaced as a separate tool; only `publish` is exposed.
+- operationId: getStatus
+  reason: Discovery detail not surfaced as a separate tool.
+coverage:
+  rest_operations: 18
+  candidate_tools: 10
+  bound: 10
+  mcp_only: 0
+  rest_only: 8
+  binding_confidence_high: 10
+  binding_confidence_medium: 0
+  binding_confidence_low: 0
