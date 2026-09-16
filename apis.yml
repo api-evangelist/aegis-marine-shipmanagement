@@ -70,8 +70,8 @@ apis:
   description: >-
     Anonymous, unauthenticated read access to the 15 published pages behind aegisships.com — Homepage,
     About and its Company Profile, CEO Note, Board of Directors and Operations children, Fleet, Fleet
-    Selection, Fleet Management, Services, News, Contact, Affiliate, Privacy Policy and Disclaimer.
-    Verified live at 15 pages, all last modified between 2018 and 2019.
+    Selection, Fleet Management, Services, News, Contact, Affiliate, Privacy Policy and Disclaimer. Verified
+    live at 15 pages, all last modified between 2018 and 2019.
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
@@ -97,9 +97,9 @@ apis:
 - aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-media-api
   name: Aegis Marine Shipmanagement Media API
   description: >-
-    Anonymous, unauthenticated read access to the media library behind aegisships.com — vessel and
-    corporate photography, logos and page imagery with their generated size variants and MIME
-    metadata. Verified live at 121 attachments, the most recent dated 2019.
+    Anonymous, unauthenticated read access to the media library behind aegisships.com — vessel and corporate
+    photography, logos and page imagery with their generated size variants and MIME metadata. Verified
+    live at 121 attachments, the most recent dated 2019.
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
@@ -122,42 +122,11 @@ apis:
     url: conformance/aegis-marine-shipmanagement-conformance.yml
   - type: Lifecycle
     url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
-- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-taxonomy-api
-  name: Aegis Marine Shipmanagement Taxonomy API
-  description: >-
-    Anonymous, unauthenticated read access to the two content taxonomies on aegisships.com — one
-    category term (News) and 25 post tags. Every term reports a count of zero because the site
-    publishes no posts, so the taxonomy is an empty classification scaffold rather than an active
-    index.
-  humanURL: https://aegisships.com/wp-json/
-  baseURL: https://aegisships.com/wp-json
-  tags:
-  - Categories
-  - Tags
-  - Content
-  properties:
-  - type: OpenAPI
-    url: openapi/aegis-marine-shipmanagement-taxonomy-api-openapi.yml
-  - type: Overlay
-    url: overlays/aegis-marine-shipmanagement-taxonomy-api-overlay.yaml
-  - type: Authentication
-    url: authentication/aegis-marine-shipmanagement-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aegis-marine-shipmanagement-problem-types.yml
-  - type: Conventions
-    url: conventions/aegis-marine-shipmanagement-conventions.yml
-  - type: DataModel
-    url: data-model/aegis-marine-shipmanagement-data-model.yml
-  - type: Conformance
-    url: conformance/aegis-marine-shipmanagement-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
 - aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-search-api
   name: Aegis Marine Shipmanagement Search API
   description: >-
-    Anonymous, unauthenticated cross-content search over aegisships.com, returning lightweight
-    id, title, url, type and subtype records. Verified live at 15 searchable objects, all of them
-    pages.
+    Anonymous, unauthenticated cross-content search over aegisships.com, returning lightweight id, title,
+    url, type and subtype records. Verified live at 15 searchable objects, all of them pages.
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
@@ -181,10 +150,10 @@ apis:
 - aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-discovery-api
   name: Aegis Marine Shipmanagement Discovery API
   description: >-
-    Anonymous discovery metadata for aegisships.com — the self-describing route index (90 routes
-    across 6 namespaces at capture), the registered content types and taxonomies, and the
-    publication statuses. Because the company publishes no developer documentation, this index is
-    the only description of the surface that exists.
+    Anonymous discovery metadata for aegisships.com — the self-describing route index (90 routes across
+    6 namespaces at capture), the registered content types and taxonomies, and the publication statuses.
+    Because the company publishes no developer documentation, this index is the only description of the
+    surface that exists.
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
@@ -208,9 +177,8 @@ apis:
 - aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-oembed-api
   name: Aegis Marine Shipmanagement oEmbed API
   description: >-
-    Public oEmbed 1.0 provider endpoint for aegisships.com URLs, returning embeddable rich metadata
-    — title, provider, dimensions and iframe HTML — for any page on the site without parsing its
-    markup.
+    Public oEmbed 1.0 provider endpoint for aegisships.com URLs, returning embeddable rich metadata —
+    title, provider, dimensions and iframe HTML — for any page on the site without parsing its markup.
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
@@ -232,9 +200,9 @@ apis:
 - aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-seo-api
   name: Aegis Marine Shipmanagement SEO Metadata API
   description: >-
-    Public Yoast SEO endpoint returning the rendered head metadata, and its parsed schema.org
-    JSON-LD graph, for any aegisships.com URL — a structured-data view of every page without
-    scraping the HTML. Provided by the Yoast SEO plugin (v15.6.2 at capture).
+    Public Yoast SEO endpoint returning the rendered head metadata, and its parsed schema.org JSON-LD
+    graph, for any aegisships.com URL — a structured-data view of every page without scraping the HTML.
+    Provided by the Yoast SEO plugin (v15.6.2 at capture).
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
@@ -254,12 +222,58 @@ apis:
     url: conventions/aegis-marine-shipmanagement-conventions.yml
   - type: Conformance
     url: conformance/aegis-marine-shipmanagement-conformance.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-categories-api
+  name: Aegis Marine Shipmanagement Categories API
+  description: The Categories API from Aegis Marine Shipmanagement — 2 operation(s) for categories.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Categories
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-categories-api-openapi.yml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: DataModel
+    url: data-model/aegis-marine-shipmanagement-data-model.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-tags-api
+  name: Aegis Marine Shipmanagement Tags API
+  description: The Tags API from Aegis Marine Shipmanagement — 2 operation(s) for tags.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-tags-api-openapi.yml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: DataModel
+    url: data-model/aegis-marine-shipmanagement-data-model.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/aegis-marine-shipmanagement-taxonomy-api-overlay.yaml
 - type: Website
   url: https://aegisships.com/
 - type: About
