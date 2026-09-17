@@ -174,29 +174,6 @@ apis:
     url: conformance/aegis-marine-shipmanagement-conformance.yml
   - type: Lifecycle
     url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
-- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-oembed-api
-  name: Aegis Marine Shipmanagement oEmbed API
-  description: >-
-    Public oEmbed 1.0 provider endpoint for aegisships.com URLs, returning embeddable rich metadata —
-    title, provider, dimensions and iframe HTML — for any page on the site without parsing its markup.
-  humanURL: https://aegisships.com/wp-json/
-  baseURL: https://aegisships.com/wp-json
-  tags:
-  - oEmbed
-  - Metadata
-  properties:
-  - type: OpenAPI
-    url: openapi/aegis-marine-shipmanagement-oembed-api-openapi.yml
-  - type: Overlay
-    url: overlays/aegis-marine-shipmanagement-oembed-api-overlay.yaml
-  - type: Authentication
-    url: authentication/aegis-marine-shipmanagement-authentication.yml
-  - type: ErrorCatalog
-    url: errors/aegis-marine-shipmanagement-problem-types.yml
-  - type: Conventions
-    url: conventions/aegis-marine-shipmanagement-conventions.yml
-  - type: Conformance
-    url: conformance/aegis-marine-shipmanagement-conformance.yml
 - aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-seo-api
   name: Aegis Marine Shipmanagement SEO Metadata API
   description: >-
@@ -266,12 +243,32 @@ apis:
     url: conformance/aegis-marine-shipmanagement-conformance.yml
   - type: Lifecycle
     url: lifecycle/aegis-marine-shipmanagement-lifecycle.yml
+- aid: aegis-marine-shipmanagement:aegis-marine-shipmanagement-o-embed-api
+  name: Aegis Marine Shipmanagement o Embed API
+  description: The o Embed API from Aegis Marine Shipmanagement — 1 operation(s) for o embed.
+  humanURL: https://aegisships.com/wp-json/
+  baseURL: https://aegisships.com/wp-json
+  tags:
+  - o Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/aegis-marine-shipmanagement-o-embed-api-openapi.yml
+  - type: Authentication
+    url: authentication/aegis-marine-shipmanagement-authentication.yml
+  - type: ErrorCatalog
+    url: errors/aegis-marine-shipmanagement-problem-types.yml
+  - type: Conventions
+    url: conventions/aegis-marine-shipmanagement-conventions.yml
+  - type: Conformance
+    url: conformance/aegis-marine-shipmanagement-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/aegis-marine-shipmanagement-oembed-api-overlay.yaml
 - type: Overlay
   url: overlays/aegis-marine-shipmanagement-taxonomy-api-overlay.yaml
 - type: Website
