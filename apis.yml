@@ -249,6 +249,8 @@ apis:
   humanURL: https://aegisships.com/wp-json/
   baseURL: https://aegisships.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
