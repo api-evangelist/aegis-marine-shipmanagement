@@ -1,13 +1,7 @@
-# Aegis Marine Shipmanagement oEmbed API
-# generated: '2026-09-09'
-# method: derived
-# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Aegis Marine Shipmanagement oEmbed API
-  description: Public oEmbed 1.0 provider endpoint for aegisships.com URLs. Returns embeddable rich metadata
-    — title, provider, dimensions and iframe HTML — for any page on the site, without scraping the page
-    markup.
+  title: Aegis Marine Shipmanagement o Embed API
+  description: Public oEmbed 1.0 provider endpoint for aegisships.com URLs. Returns embeddable rich metadata — title, provider, dimensions and iframe HTML — for any page on the site, without scraping the page markup.
   version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
   contact:
     name: Aegis Marine Shipmanagement
@@ -19,23 +13,20 @@ info:
     generated: '2026-09-09'
     method: derived
     source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
-    note: Derived from the site's own self-describing WordPress route index and from responses actually
-      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
-      core, not a product API authored by Aegis Marine Shipmanagement.
+    note: Derived from the site's own self-describing WordPress route index and from responses actually fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress core, not a product API authored by Aegis Marine Shipmanagement.
 servers:
 - url: https://aegisships.com/wp-json
   description: WordPress REST API root for aegisships.com
 tags:
-- name: oEmbed
+- name: o Embed
 paths:
   /oembed/1.0/embed:
     get:
       operationId: getOembed
       tags:
-      - oEmbed
+      - o Embed
       summary: Retrieve oEmbed data for a URL
-      description: Returns oEmbed 1.0 rich metadata for an aegisships.com URL. Requests for URLs outside
-        this site are rejected.
+      description: Returns oEmbed 1.0 rich metadata for an aegisships.com URL. Requests for URLs outside this site are rejected.
       parameters:
       - name: url
         in: query
@@ -83,14 +74,38 @@ paths:
                 width: 600
                 height: 338
         '404':
-          description: '`oembed_invalid_url` — the URL does not resolve to an embeddable object on this
-            site.'
+          description: '`oembed_invalid_url` — the URL does not resolve to an embeddable object on this site.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json` with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.
     OEmbedResponse:
       type: object
       description: An oEmbed 1.0 `rich` response.
@@ -124,29 +139,3 @@ components:
         html:
           type: string
           description: HTML markup that renders the embed.
-    Error:
-      type: object
-      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
-        with a `code`/`message`/`data` shape.
-      required:
-      - code
-      - message
-      - data
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
-        message:
-          type: string
-          description: Human-readable error message.
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              additionalProperties:
-                type: string
-              description: Per-parameter validation messages, present on 400.

@@ -1,15 +1,7 @@
-# Aegis Marine Shipmanagement Discovery API
-# generated: '2026-09-09'
-# method: derived
-# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Aegis Marine Shipmanagement Discovery API
-  description: Anonymous discovery metadata for aegisships.com — the self-describing route index (90 routes
-    across 6 namespaces at capture), the registered content types and taxonomies, and the publication
-    statuses. Aegis Marine Shipmanagement publishes no developer documentation, so this index is the only
-    description of the surface that exists, and it is emitted by WordPress rather than authored by the
-    company.
+  description: Anonymous discovery metadata for aegisships.com — the self-describing route index (90 routes across 6 namespaces at capture), the registered content types and taxonomies, and the publication statuses. Aegis Marine Shipmanagement publishes no developer documentation, so this index is the only description of the surface that exists, and it is emitted by WordPress rather than authored by the company.
   version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
   contact:
     name: Aegis Marine Shipmanagement
@@ -21,9 +13,7 @@ info:
     generated: '2026-09-09'
     method: derived
     source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
-    note: Derived from the site's own self-describing WordPress route index and from responses actually
-      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
-      core, not a product API authored by Aegis Marine Shipmanagement.
+    note: Derived from the site's own self-describing WordPress route index and from responses actually fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress core, not a product API authored by Aegis Marine Shipmanagement.
 servers:
 - url: https://aegisships.com/wp-json
   description: WordPress REST API root for aegisships.com
@@ -36,12 +26,9 @@ paths:
       tags:
       - Discovery
       summary: Retrieve the API index
-      description: 'Returns the self-describing root document: site name, URL, the registered namespaces
-        and the full route index. This document is what makes the surface machine-readable in the absence
-        of any published developer documentation. 90 routes across 6 namespaces at capture.'
+      description: 'Returns the self-describing root document: site name, URL, the registered namespaces and the full route index. This document is what makes the surface machine-readable in the absence of any published developer documentation. 90 routes across 6 namespaces at capture.'
       parameters:
-      - &id001
-        description: Scope of the returned content.
+      - description: Scope of the returned content.
         schema:
           type: string
           enum:
@@ -78,10 +65,18 @@ paths:
       tags:
       - Discovery
       summary: List content types
-      description: Returns the registered content types and their `rest_base` values. Only WordPress core
-        types are registered — there is no site-specific custom post type.
+      description: Returns the registered content types and their `rest_base` values. Only WordPress core types are registered — there is no site-specific custom post type.
       parameters:
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: Registered content types keyed by slug.
@@ -105,7 +100,16 @@ paths:
         description: Content type slug.
         schema:
           type: string
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: The content type.
@@ -113,7 +117,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ContentType'
-        '404': &id002
+        '404':
           description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
           content:
             application/json:
@@ -130,10 +134,18 @@ paths:
       tags:
       - Discovery
       summary: List taxonomies
-      description: Returns the registered taxonomies (`category`, `post_tag`) and the content types each
-        applies to.
+      description: Returns the registered taxonomies (`category`, `post_tag`) and the content types each applies to.
       parameters:
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: Registered taxonomies keyed by slug.
@@ -157,7 +169,16 @@ paths:
         description: Taxonomy slug.
         schema:
           type: string
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: The taxonomy.
@@ -165,7 +186,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Taxonomy'
-        '404': *id002
+        '404':
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
   /wp/v2/statuses:
     get:
       operationId: getStatuses
@@ -174,7 +205,16 @@ paths:
       summary: List publication statuses
       description: Returns the publication statuses visible anonymously. Only `publish` is exposed.
       parameters:
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: Publication statuses keyed by slug.
@@ -205,7 +245,16 @@ paths:
         description: Status slug.
         schema:
           type: string
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: The publication status.
@@ -213,7 +262,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
-        '404': *id002
+        '404':
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
 components:
   schemas:
     ApiIndex:
@@ -246,14 +305,13 @@ components:
           description: Registered REST namespaces.
         authentication:
           type: object
-          description: Advertised authentication schemes. Empty on this site — no anonymous-facing auth
-            scheme is advertised.
+          description: Advertised authentication schemes. Empty on this site — no anonymous-facing auth scheme is advertised.
           additionalProperties: true
         routes:
           type: object
           description: Full route index keyed by route pattern.
           additionalProperties: true
-        _links: &id003
+        _links:
           type: object
           description: HAL-style `_links` relations emitted by the WordPress REST API.
           additionalProperties: true
@@ -281,7 +339,10 @@ components:
           items:
             type: string
           description: Taxonomies applying to this type.
-        _links: *id003
+        _links:
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
     Taxonomy:
       type: object
       description: A registered taxonomy.
@@ -306,31 +367,13 @@ components:
         rest_base:
           type: string
           description: Path segment under `/wp/v2` where the terms live.
-        _links: *id003
-    Status:
-      type: object
-      description: A publication status.
-      properties:
-        name:
-          type: string
-          description: Human-readable label.
-        slug:
-          type: string
-          description: Status slug.
-        public:
-          type: boolean
-          description: Whether objects in this status are publicly visible.
-        queryable:
-          type: boolean
-          description: Whether the status can be queried.
-        date_floating:
-          type: boolean
-          description: Whether the publication date floats.
-        _links: *id003
+        _links:
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
     Error:
       type: object
-      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
-        with a `code`/`message`/`data` shape.
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json` with a `code`/`message`/`data` shape.
       required:
       - code
       - message
@@ -353,3 +396,26 @@ components:
               additionalProperties:
                 type: string
               description: Per-parameter validation messages, present on 400.
+    Status:
+      type: object
+      description: A publication status.
+      properties:
+        name:
+          type: string
+          description: Human-readable label.
+        slug:
+          type: string
+          description: Status slug.
+        public:
+          type: boolean
+          description: Whether objects in this status are publicly visible.
+        queryable:
+          type: boolean
+          description: Whether the status can be queried.
+        date_floating:
+          type: boolean
+          description: Whether the publication date floats.
+        _links:
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true

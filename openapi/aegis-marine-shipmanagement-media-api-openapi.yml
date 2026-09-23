@@ -1,13 +1,7 @@
-# Aegis Marine Shipmanagement Media API
-# generated: '2026-09-09'
-# method: derived
-# source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Aegis Marine Shipmanagement Media API
-  description: Anonymous read access to the media library behind aegisships.com — vessel and corporate
-    photography, logos and page imagery, with their generated size variants and MIME metadata. 121 attachments
-    existed at capture, the newest dated 2019.
+  description: Anonymous read access to the media library behind aegisships.com — vessel and corporate photography, logos and page imagery, with their generated size variants and MIME metadata. 121 attachments existed at capture, the newest dated 2019.
   version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
   contact:
     name: Aegis Marine Shipmanagement
@@ -19,9 +13,7 @@ info:
     generated: '2026-09-09'
     method: derived
     source: https://aegisships.com/wp-json/ (live WordPress REST route index, fetched 2026-09-09)
-    note: Derived from the site's own self-describing WordPress route index and from responses actually
-      fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress
-      core, not a product API authored by Aegis Marine Shipmanagement.
+    note: Derived from the site's own self-describing WordPress route index and from responses actually fetched anonymously. No operation, parameter or schema here was invented; the surface is WordPress core, not a product API authored by Aegis Marine Shipmanagement.
 servers:
 - url: https://aegisships.com/wp-json
   description: WordPress REST API root for aegisships.com
@@ -36,8 +28,7 @@ paths:
       summary: List media
       description: Returns a paginated collection of media attachments. `X-WP-Total` read 121 when captured.
       parameters:
-      - &id001
-        description: Scope of the returned content.
+      - description: Scope of the returned content.
         schema:
           type: string
           enum:
@@ -58,8 +49,7 @@ paths:
       - name: per_page
         in: query
         required: false
-        description: Maximum number of items returned per page. The API rejects values above 100 with
-          HTTP 400 `rest_invalid_param`.
+        description: Maximum number of items returned per page. The API rejects values above 100 with HTTP 400 `rest_invalid_param`.
         schema:
           type: integer
           minimum: 1
@@ -114,8 +104,7 @@ paths:
           type: string
       responses:
         '200':
-          description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages`
-            response headers.
+          description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages` response headers.
           headers:
             X-WP-Total:
               description: Total number of matching objects.
@@ -136,8 +125,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/MediaItem'
               example:
-              - &id002
-                id: 767
+              - id: 767
                 date: '2019-05-20T07:54:15'
                 slug: preeminent-shipping-2
                 type: attachment
@@ -176,7 +164,16 @@ paths:
         description: Unique numeric identifier for the object.
         schema:
           type: integer
-      - *id001
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
       responses:
         '200':
           description: The requested object.
@@ -184,7 +181,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaItem'
-              example: *id002
+              example:
+                id: 767
+                date: '2019-05-20T07:54:15'
+                slug: preeminent-shipping-2
+                type: attachment
+                link: https://aegisships.com/homepage/preeminent-shipping-2/
+                title:
+                  rendered: Preeminent-Shipping
+                author: 1
+                alt_text: ''
+                media_type: image
+                mime_type: image/jpeg
+                source_url: https://aegisships.com/wp-content/uploads/2019/05/Preeminent-Shipping.jpg
         '404':
           description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
           content:
@@ -198,6 +207,31 @@ paths:
                   status: 404
 components:
   schemas:
+    Error:
+      type: object
+      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json` with a `code`/`message`/`data` shape.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              additionalProperties:
+                type: string
+              description: Per-parameter validation messages, present on 400.
     MediaItem:
       type: object
       description: A media library attachment. 121 exist at capture.
@@ -224,21 +258,23 @@ components:
           description: Attachment page URL.
         title:
           type: object
-          properties: &id003
+          properties:
             rendered:
               type: string
               description: HTML-rendered value.
           description: Attachment title.
         author:
           type: integer
-          description: Identifier of the uploading user. Not anonymously resolvable — the Users collection
-            returns HTTP 401.
+          description: Identifier of the uploading user. Not anonymously resolvable — the Users collection returns HTTP 401.
         alt_text:
           type: string
           description: Alternative text for the asset.
         caption:
           type: object
-          properties: *id003
+          properties:
+            rendered:
+              type: string
+              description: HTML-rendered value.
           description: Attachment caption.
         media_type:
           type: string
@@ -266,29 +302,3 @@ components:
           type: object
           description: HAL-style `_links` relations emitted by the WordPress REST API.
           additionalProperties: true
-    Error:
-      type: object
-      description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json`
-        with a `code`/`message`/`data` shape.
-      required:
-      - code
-      - message
-      - data
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code, e.g. `rest_post_invalid_id`.
-        message:
-          type: string
-          description: Human-readable error message.
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              additionalProperties:
-                type: string
-              description: Per-parameter validation messages, present on 400.

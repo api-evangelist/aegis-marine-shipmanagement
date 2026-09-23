@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Aegis Marine Shipmanagement Search API
-  description: Anonymous cross-content search over aegisships.com, returning lightweight id / title / url / type / subtype records. 15 objects were searchable at capture — all of them pages, since the site has no published posts.
+  title: Aegis Marine Shipmanagement Taxonomy Tags API
+  description: 'Anonymous read access to the two content taxonomies on aegisships.com — one `category` term (`News`) and 25 `post_tag` terms. Every term reports `count: 0` because the site publishes no posts, so these terms are an empty classification scaffold rather than an active index.'
   version: wp-v2 (WordPress core REST API, as observed 2026-09-09)
   contact:
     name: Aegis Marine Shipmanagement
@@ -18,15 +18,15 @@ servers:
 - url: https://aegisships.com/wp-json
   description: WordPress REST API root for aegisships.com
 tags:
-- name: Search
+- name: Tags
 paths:
-  /wp/v2/search:
+  /wp/v2/tags:
     get:
-      operationId: search
+      operationId: getTags
       tags:
-      - Search
-      summary: Search site content
-      description: Searches published site content and returns lightweight result records. `X-WP-Total` read 15 when captured.
+      - Tags
+      summary: List tags
+      description: Returns the flat `post_tag` terms. `X-WP-Total` read 25 when captured.
       parameters:
       - description: Scope of the returned content.
         schema:
@@ -70,24 +70,20 @@ paths:
           enum:
           - asc
           - desc
-      - name: type
+      - name: slug
         in: query
         required: false
-        description: Limit results to a coarse object type.
-        schema:
-          type: string
-          enum:
-          - post
-          - term
-          - post-format
-      - name: subtype
-        in: query
-        required: false
-        description: Limit results to specific object subtypes, e.g. `page`.
+        description: Limit results to terms with specific slugs.
         schema:
           type: array
           items:
             type: string
+      - name: hide_empty
+        in: query
+        required: false
+        description: Whether to hide terms not assigned to any object.
+        schema:
+          type: boolean
       responses:
         '200':
           description: A page of results. Total counts are returned in the `X-WP-Total` and `X-WP-TotalPages` response headers.
@@ -109,13 +105,14 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SearchResult'
+                  $ref: '#/components/schemas/Tag'
               example:
-              - id: 477
-                title: Disclaimer
-                url: https://aegisships.com/disclaimer/
-                type: post
-                subtype: page
+              - id: 16
+                count: 0
+                link: https://aegisships.com/tag/2017/
+                name: '2017'
+                slug: '2017'
+                taxonomy: post_tag
         '400':
           description: '`rest_invalid_param` — a query parameter failed validation (observed on `per_page=200`).'
           content:
@@ -129,36 +126,57 @@ paths:
                   status: 400
                   params:
                     per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+  /wp/v2/tags/{id}:
+    get:
+      operationId: getTag
+      tags:
+      - Tags
+      summary: Retrieve a tag
+      description: Returns a single tag term by numeric id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique numeric identifier for the object.
+        schema:
+          type: integer
+      - description: Scope of the returned content.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        in: query
+        name: context
+        required: false
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+              example:
+                id: 16
+                count: 0
+                link: https://aegisships.com/tag/2017/
+                name: '2017'
+                slug: '2017'
+                taxonomy: post_tag
+        '404':
+          description: '`rest_post_invalid_id` / `rest_no_route` — the object or route does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
 components:
   schemas:
-    SearchResult:
-      type: object
-      description: A lightweight cross-content search result.
-      properties:
-        id:
-          type: integer
-          description: Identifier of the matched object. References `Page.id` when `subtype` is `page`.
-        title:
-          type: string
-          description: Title of the matched object.
-        url:
-          type: string
-          format: uri
-          description: Public URL of the matched object.
-        type:
-          type: string
-          description: Coarse result type.
-          enum:
-          - post
-          - term
-          - post-format
-        subtype:
-          type: string
-          description: Concrete object subtype, e.g. `page`.
-        _links:
-          type: object
-          description: HAL-style `_links` relations emitted by the WordPress REST API.
-          additionalProperties: true
     Error:
       type: object
       description: WordPress REST API error envelope. Not RFC 9457 problem+json — it is served as `application/json` with a `code`/`message`/`data` shape.
@@ -184,3 +202,34 @@ components:
               additionalProperties:
                 type: string
               description: Per-parameter validation messages, present on 400.
+    Tag:
+      type: object
+      description: A term in the flat `post_tag` taxonomy. 25 exist at capture.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the term.
+        count:
+          type: integer
+          description: Number of published objects assigned to the term. Every term on this site reads 0, because no posts are published.
+        description:
+          type: string
+          description: HTML description of the term.
+        link:
+          type: string
+          format: uri
+          description: Public archive URL for the term.
+        name:
+          type: string
+          description: Display name of the term.
+        slug:
+          type: string
+          description: URL-safe identifier for the term.
+        _links:
+          type: object
+          description: HAL-style `_links` relations emitted by the WordPress REST API.
+          additionalProperties: true
+        taxonomy:
+          type: string
+          const: post_tag
+          description: Taxonomy the term belongs to.
