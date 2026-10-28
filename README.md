@@ -64,5 +64,104 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Aegis Marine Shipmanagement is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+Aegis Marine Shipmanagement Inc. is a privately owned marine vessel transportation and ship management company headquartered at 215 South Road and King Street, Lacytown, Georgetown, Guyana, with a secondary office in Brooklyn, New York. Founded in 2018 by Guyanese-American businessman Sean Clarke, it serves the oil and gas sector, operating crude oil tankers, liquefied natural gas tankers and offshore support service vessels on behalf of third-party owners, partners and investors. Its services span commercial, technical, safety and quality, and logistics ship management, delivered through partnerships with established marine service providers, and include vessel registration under various flags, technical inspection and marine engine spares, marine vessel chartering, commodity trader engagement, and crew management covering recruitment, familiarization, training, retention and career promotion. Aegis Marine Shipmanagement is a shipping operator rather than a software vendor. It publishes no developer portal, no API documentation, no SDKs and no commercial or partner-facing product API. The only machine-readable interface it exposes is the WordPress core REST content API behind its corporate website at aegisships.com, which is captured here for discovery purposes: it is anonymously readable, effectively read-only, and serves the marketing site's own pages, media and taxonomy rather than any fleet, chartering or vessel-operations data.
+
+**Areas:** Company · Shipping · Ship Management · Maritime · Marine Transportation · Oil and Gas · Crude Oil Tankers · LNG · Offshore · Chartering · Crew Management · Logistics
+
+## Aegis Marine Shipmanagement on APIs.io
+
+Everything profiled for Aegis Marine Shipmanagement is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/aegis-marine-shipmanagement/](https://apis.io/providers/aegis-marine-shipmanagement/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Aegis Marine Shipmanagement Website (WordPress REST)](https://apis.io/apis/aegis-marine-shipmanagement/aegisships-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Aegis Marine Shipmanagement website at aegisships.com: the route index of the site's content management…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [aegis-marine-shipmanagement-mcp.yml](https://apis.io/servers/aegis-marine-shipmanagement/aegis-marine-shipmanagement-mcp-yml/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Aegis Marine Shipmanagement Authentication](https://apis.io/security/aegis-marine-shipmanagement/aegis-marine-shipmanagement-authentication/)
+- [Aegis Marine Shipmanagement Domain Security](https://apis.io/security/aegis-marine-shipmanagement/aegis-marine-shipmanagement-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Aegis Marine Shipmanagement Plans Pricing](https://apis.io/plans/aegis-marine-shipmanagement/aegis-marine-shipmanagement-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Aegis Marine Shipmanagement Rate Limits](https://apis.io/rate-limits/aegis-marine-shipmanagement/aegis-marine-shipmanagement-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://aegisships.com/)
+- [Terms of service](https://aegisships.com/disclaimer/)
+- [Privacy policy](https://aegisships.com/privacy-policy-2/)
+
+## API Evangelist rating
+
+**Kin Score 20.3** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 65.2 |
+| Contract quality | 6.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 23.2 |
+| Access clarity | 21.1 |
+
+**Agent readiness 10.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.5** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/aegis-marine-shipmanagement/](https://apis.io/providers/aegis-marine-shipmanagement/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Aegis Marine Shipmanagement: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/aegis-marine-shipmanagement/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
